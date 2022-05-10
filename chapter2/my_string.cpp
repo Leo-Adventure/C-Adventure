@@ -1,0 +1,89 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+using namespace std;
+class MyString
+{
+private:
+    char *m_data;
+    size_t m_len;
+    void copy_data(const char *s)
+    {
+        m_data = new char[m_len + 1];
+        memcpy(m_data, s, m_len);
+        m_data[m_len] = '\0';
+    }
+
+public:
+    MyString()
+    {
+        m_data = NULL;
+        m_len = 0;
+    }
+    MyString(const char *p)
+    {
+        cout << "In constructor, source = " << p << endl;
+        m_len = strlen(p);
+        copy_data(p);
+    }
+
+    MyString(const MyString &str)
+    {
+        m_len = str.m_len;
+        copy_data(str.m_data);
+        cout << "Copy constructor is called! source: " << str.m_data << endl;
+    }
+    MyString(MyString &&str)
+    {
+        cout << "Move constructor is called! source: " << str.m_data << endl;
+        m_len = str.m_len;
+        m_data = str.m_data;
+        str.m_len = 0;
+        str.m_data = NULL;
+    }
+
+    MyString &operator=(MyString &&str)
+    {
+        cout << "Move assignment is called! source: " << str.m_data << endl;
+        if (this != &str)
+        {
+            m_len = str.m_len;
+            m_data = str.m_data;
+            str.m_len = 0;
+            str.m_data = NULL;
+        }
+        return *this;
+    }
+
+    MyString &operator=(const MyString &str)
+    {
+        if (this != &str)
+        {
+            m_len = str.m_len;
+            copy_data(str.m_data);
+        }
+        cout << "Copy assignment is called! source: " << str.m_data << endl;
+        return *this;
+    }
+    virtual ~MyString()
+    {
+        if (m_data)
+        {
+            cout << "In deconstructor, source = " << m_data << endl;
+            delete[] m_data;
+        }
+    }
+};
+
+void test()
+{
+    MyString a("sustech");
+    a = MyString("Hello");
+    vector<MyString> vec;
+    vec.push_back(MyString("World"));
+}
+
+int main()
+{
+    test();
+}
