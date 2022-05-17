@@ -3,7 +3,7 @@ This repertory contains some interesting code for C++ adventure.
 
 ## Chapter 1
 
-本章主要介绍了通过C++11 的特性简化代码，是代码更加方便、简洁和优雅
+本章主要介绍了通过C++11 的特性简化代码，是代码更加方便、简洁和优雅 (elegant)
 
 - using ll = long long 更加直观 + 可读
 
